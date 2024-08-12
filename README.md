@@ -6,6 +6,9 @@ own vehicles can’t drive due to health issues. Whether it’s a long trip for 
 requiring immediate travel, having a dependable driver can greatly reduce stress and risks. This system highlights
 the importance of specialized driver services for those in poor health, emphasizing the need for an efficient,
 accessible, and responsive system supported by location-based driver recommendations.
+
+
+
 The proposed service aims to address various needs, including long trips, emergencies, and short local
 journeys. Using advanced GPS technology, the system identifies the user’s location and connects them with
 nearby professional drivers suited to their needs. For long trips, especially for medical treatments far from
