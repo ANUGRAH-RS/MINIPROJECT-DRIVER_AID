@@ -1,0 +1,144 @@
+{% extends 'driver/dindex2.html' %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .profile-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .profile-header h1 {
+            font-size: 24px;
+            color: #4951aa;
+            margin: 0;
+        }
+        .profile-header img {
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .profile-info label {
+            font-weight: bold;
+            color: #4951aa;
+            margin-top: 10px;
+        }
+        .profile-info p {
+            margin: 5px 0;
+            font-size: 16px;
+            color: #333;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            word-break: break-word; /* Ensures long text doesn't overflow */
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #4951aa;
+            border: none;
+            border-radius: 30px;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .btn:hover {
+            background-color: #374a8e;
+        }
+        .profile-section {
+            padding: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        .round-image {
+    /* Must be the same as width to maintain a circle */
+    border-radius: 50%;
+    object-fit: cover; /* Ensures the image covers the element without distortion */
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="profile-info">
+            <div class="profile-section">
+                <div align="center">
+                    <img src="{{ data.image.url }}" width="200" height="200" class="round-image"/>
+                </div>
+            </div>
+<div class="profile-section">
+                <label for="name">Name:</label>
+                <p id="name">{{ data.name }}</p>
+            </div>
+
+            <div class="profile-section">
+                <label for="contact">Contact:</label>
+                <p id="contact">{{ data.contact }}</p>
+            </div>
+
+            <div class="profile-section">
+                <label for="address">Address:</label>
+                <p id="address">{{ data.address }}</p>
+            </div>
+
+            <div class="profile-section">
+                <label for="email">Email:</label>
+                <p id="email">{{ data.email }}</p>
+            </div>
+
+            <div class="profile-section">
+                <label for="licence">License:</label>
+                <p id="licence">{{ data.licence }}</p>
+            </div>
+
+            <!-- Uncomment these if vehicle information is added in the future
+            <div class="profile-section">
+                <label for="vehicle">Vehicle:</label>
+                <p id="vehicle">{{ data.vehicle }}</p>
+            </div>
+
+            <div class="profile-section">
+                <label for="vehicletype">Vehicle Type:</label>
+                <p id="vehicletype">{{ data.vehicletype }}</p>
+            </div>
+            -->
+
+            <div class="profile-section">
+                <label for="status">Status:</label>
+                <p id="status">{{ data.status }}</p>
+            </div>
+        </div>
+        <a href="/driver_edit_profile" class="btn">Edit Profile</a>
+    </div>
+</body>
+</html>
+{% endblock %}

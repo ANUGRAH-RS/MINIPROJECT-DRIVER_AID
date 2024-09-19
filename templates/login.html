@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  	<title>Login 10</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+	<link rel="stylesheet" href="../static/login/css/style.css">
+      <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../static/home%20page/css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="../static/home%20page/css/animate.css">
+
+    <link rel="stylesheet" href="../static/home%20page/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="../static/home%20page/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="../static/home%20page/css/magnific-popup.css">
+
+    <link rel="stylesheet" href="../static/home%20page/css/aos.css">
+
+    <link rel="stylesheet" href="../static/home%20page/css/ionicons.min.css">
+
+    <link rel="stylesheet" href="../static/home%20page/css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="../static/home%20page/css/jquery.timepicker.css">
+
+
+    <link rel="stylesheet" href="../static/home%20page/css/flaticon.css">
+    <link rel="stylesheet" href="../static/home%20page/css/icomoon.css">
+    <link rel="stylesheet" href="../static/home%20page/css/style.css">
+
+<style>
+  .frm-control {
+    border-radius: 30px; /* Rounded corners */
+    border: 1px solid rgba(0, 0, 0, 0.2); /* Subtle border */
+    padding: 15px; /* Comfortable padding */
+    font-size: 16px; /* Larger text for readability */
+    width: 100%; /* Full width */
+    background: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle inner shadow */
+    box-sizing: border-box; /* Ensure padding is included in width */
+    color: #4951aa; /* Text color */
+  }
+
+  .frm-control::placeholder {
+    color: #888; /* Placeholder text color */
+    opacity: 1; /* Ensure placeholder text is visible */
+  }
+
+  .frm-control:focus {
+    border-color: #4951aa; /* Border color on focus */
+    outline: none; /* Remove default focus outline */
+    background: rgba(255, 255, 255, 1); /* Remove transparency on focus */
+  }
+</style>
+
+
+	</head>
+	<body class="img js-fullheight" style="background-image: url(./static/login/images/bg.jpg);">
+
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container">
+	      <a class="navbar-brand" href="home.html">DRIVER<span>AID</span></a>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="oi oi-menu"></span> Menu
+	      </button>
+
+{#	      <div class="collapse navbar-collapse" id="ftco-nav">#}
+{#	        <ul class="navbar-nav ml-auto">#}
+{#	          <li class="nav-item active"><a href="/" class="nav-link">Home</a></li>#}
+{#	          <li class="nav-item"><a href="#about" class="nav-link">About</a></li>#}
+{#	          <li class="nav-item"><a href="#services" class="nav-link">Services</a></li>#}
+{#	          <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>#}
+{#	          <li class="nav-item"><a href="log" class="nav-link">Login</a></li>#}
+{#	        </ul>#}
+{#	      </div>#}
+	    </div>
+	  </nav>
+
+	<section class="ftco-section">
+		<div class="container" align="center">
+			<div class="row justify-content-center" align="center">
+				<div class="col-md-6 text-center mb-5">
+{#					<h2 class="heading-section">Driver Aid</h2>#}
+				</div>
+			</div>&nbsp;
+			<div class="row justify-content-center" style="background: #4951AA82;height:400px;align-items: center;width: 750px;" align="center">
+				<div class="col-md-6 col-lg-4">
+					<div class="login-wrap p-0">
+		      	<h3 class="mb-4 text-center">Have an account?</h3>
+		      	<form action="/login_code"  method="post" class="signin-form">{% csrf_token %}
+		      		<div class="form-group">
+		      			<input type="text"  class="frm-control" placeholder="Username" name="username" title="Enter Your Username" required autocomplete="off">
+		      		</div>
+	            <div class="form-group">
+	              <input id="password-field" type="password" class="frm-control" placeholder="Password" title="Enter Your Password" autocomplete="off"  name="password" required>
+{#	              <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>#}
+	            </div>
+	            <div class="form-group">
+	            	<button type="submit" style="border-radius: 30px;" class="form-control btn btn-primary submit px-3">Sign In</button>
+	            </div>
+	            <div class="form-group d-md-flex">
+	            	<div class="w-50">
+									<a href="/driver_reg" style="color: #fff;border-radius:30px;" class="btn btn-outline-danger">Driver Register</a>
+								</div> &nbsp;&nbsp;
+                    <div class="w-50 text-md-right">
+									<a href="/user_reg" class="btn btn-outline-success" style="color: #fff ;border-radius:30px;"">User Register</a>
+								</div>
+	            </div>
+	          </form>
+{#	          <p class="w-100 text-center">&mdash; Or Sign In With &mdash;</p>#}
+{#	          <div class="social d-flex text-center">#}
+{#	          	<a href="#" class="px-2 py-2 mr-md-1 rounded"><span class="ion-logo-facebook mr-2"></span> Facebook</a>#}
+{#	          	<a href="#" class="px-2 py-2 ml-md-1 rounded"><span class="ion-logo-twitter mr-2"></span> Twitter</a>#}
+{#	          </div>#}
+		      </div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script src="../static/login/js/jquery.min.js"></script>
+  <script src="../static/login/js/js/popper.js"></script>
+  <script src="../static/login/js/js/bootstrap.min.js"></script>
+  <script src="../static/login/js/js/main.js"></script>
+
+	</body>
+</html>
+
