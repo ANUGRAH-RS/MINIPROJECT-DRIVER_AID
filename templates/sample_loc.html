@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/home%20page/css/style.css">
+    <style>
+        /* Your CSS here */
+    </style>
+</head>
+<body>
+    <div class="registration-form" style="margin-top: 100px;">
+        <h2>Driver Registration</h2>
+        <form method="post" action="" onsubmit="return validateForm()" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if messages %}
+                <div class="alert alert-info">
+                    {% for message in messages %}
+                    <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- Other form fields -->
+
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <label for="location" class="custom-label">Current Location</label>
+                    <button type="button" class="btn btn-info w-100" onclick="getLocation()">Get Current Location</button>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <input type="hidden" id="latitude" name="latitude">
+                    <label>Latitude:</label>
+                    <input type="text" id="latDisplay" class="custom-input" disabled>
+                </div>
+
+                <div class="col-md-6">
+                    <input type="hidden" id="longitude" name="longitude">
+                    <label>Longitude:</label>
+                    <input type="text" id="lonDisplay" class="custom-input" disabled>
+                </div>
+            </div>
+
+            <button type="submit" name="submit" class="btn btn-primary w-100">Register</button>
+        </form>
+    </div>
+
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function showPosition(position) {
+            document.getElementById('latitude').value = position.coords.latitude;
+            document.getElementById('latDisplay').value = position.coords.latitude;
+            document.getElementById('longitude').value = position.coords.longitude;
+            document.getElementById('lonDisplay').value = position.coords.longitude;
+        }
+
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("User denied the request for Geolocation.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Location information is unavailable.");
+                    break;
+                case error.TIMEOUT:
+                    alert("The request to get user location timed out.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("An unknown error occurred.");
+                    break;
+            }
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -45,10 +45,10 @@ Author URL: http://w3layouts.com
               <a class="nav-link" href="/user_home">Home </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="">Profile</a>
+              <a class="nav-link" href="/user_view_profile#a">Profile</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="">Search Drivers</a>
+              <a class="nav-link" href="/user_view_driver#a"> Drivers</a>
             </li>
               <li class="nav-item">
               <a class="nav-link" href="">History</a>
@@ -61,13 +61,18 @@ Author URL: http://w3layouts.com
             </li>
               <li class="nav-item">
               <a class="nav-link" href="">Payment</a>
+
+            </li>
+                  <li class="nav-item">
+
+              <a class="nav-link" href="chatwithuserdr">Chat</a>
             </li>
           </ul>
           <ul class="navbar-nav search-right mt-lg-0 mt-2">
 {#            <li class="nav-item mr-3" title="Search"><a href="#search" class="btn search-search">#}
 {#                <span class="fa fa-search" aria-hidden="true"></span></a></li>#}
             <li class="nav-item"><a href="/" class="btn btn-primary d-none d-lg-block btn-style mr-2">Logout
-                Us</a></li>
+                </a></li>
           </ul>
 
           <!-- //toggle switch for light and dark theme -->
@@ -111,7 +116,7 @@ Author URL: http://w3layouts.com
               <div class="banner-info">
                 <div class="container">
                   <div class="banner-info-bg">
-                    <h5>Driver Aid is a system designed to provide reliable</h5>
+                    <p>Driver Aid is a system designed to provide reliable</p>
 {#                    <div class="banner-buttons">#}
 {#                      <a class="btn btn-style btn-primary" href="about.html">Read More</a>#}
 {#                      <a href="#small-dialog" class="popup-with-zoom-anim play-view">#}
@@ -138,7 +143,7 @@ Author URL: http://w3layouts.com
               <div class="banner-info">
                 <div class="container">
                   <div class="banner-info-bg">
-                    <h5>Driver Booking is a feature that allows users </h5>
+                    <p>Driver Booking is a feature that allows users </p>
                     <div class="banner-buttons">
 {#                      <a class="btn btn-style btn-primary" href="about.html">Read More</a>#}
                       <a href="#small-dialog" class="popup-with-zoom-anim play-view">
@@ -165,7 +170,7 @@ Author URL: http://w3layouts.com
               <div class="banner-info">
                 <div class="container">
                   <div class="banner-info-bg">
-                    <h5>We are qualified &amp; <br> professional</h5>
+                    <p>We are qualified &amp; <br> professional</p>
                     <div class="banner-buttons">
 {#                      <a class="btn btn-style btn-primary" href="about.html">Read More</a>#}
 {#                      <a href="#small-dialog1" class="popup-with-zoom-anim play-view">#}
@@ -192,7 +197,7 @@ Author URL: http://w3layouts.com
               <div class="banner-info">
                 <div class="container">
                   <div class="banner-info-bg">
-                    <h5>Honest Service For You Car Care.</h5>
+                    <p>Honest Service For You Car Care.</p>
 {#                    <div class="banner-buttons">#}
 {#                      <a class="btn btn-style btn-primary" href="about.html">Read More</a>#}
 {#                      <a href="#small-dialog3" class="popup-with-zoom-anim play-view">#}
@@ -223,6 +228,11 @@ Author URL: http://w3layouts.com
   <!-- /content-3-->
   <!-- //content-3-->
   <!-- /features-4 -->
+
+  <div id="a">
+      {% block body %}
+      {% endblock %}
+  </div>
   <section class="features-4">
     <div class="features4-block py-5">
       <div class="container py-lg-4">

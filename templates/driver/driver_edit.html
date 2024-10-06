@@ -1,3 +1,183 @@
+{#{% extends 'driver/dindex2.html' %}#}
+{#{% block body %}#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <meta name="viewport" content="width=device-width, initial-scale=1.0">#}
+{#    <title>View Profile</title>#}
+{#    <style>#}
+{#        body {#}
+{#            font-family: Arial, sans-serif;#}
+{#            background-color: #f4f4f4;#}
+{#            margin: 0;#}
+{#            padding: 0;#}
+{#        }#}
+{#        .container {#}
+{#            width: 80%;#}
+{#            max-width: 900px;#}
+{#            margin: 30px auto;#}
+{#            padding: 20px;#}
+{#            background: #fff;#}
+{#            border-radius: 10px;#}
+{#            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);#}
+{#        }#}
+{#        .profile-header {#}
+{#            text-align: center;#}
+{#            margin-bottom: 20px;#}
+{#        }#}
+{#        .profile-header h1 {#}
+{#            font-size: 24px;#}
+{#            color: #4951aa;#}
+{#            margin: 0;#}
+{#        }#}
+{#        .profile-header img {#}
+{#            border-radius: 50%;#}
+{#            width: 120px;#}
+{#            height: 120px;#}
+{#            object-fit: cover;#}
+{#            margin-bottom: 15px;#}
+{#        }#}
+{#        .profile-info {#}
+{#            display: flex;#}
+{#            flex-direction: column;#}
+{#            gap: 15px;#}
+{#        }#}
+{#        .profile-info label {#}
+{#            font-weight: bold;#}
+{#            color: #4951aa;#}
+{#            margin-top: 10px;#}
+{#        }#}
+{#        .profile-info p {#}
+{#            margin: 5px 0;#}
+{#            font-size: 16px;#}
+{#            color: #333;#}
+{#            background: rgba(255, 255, 255, 0.9);#}
+{#            border: 1px solid rgba(0, 0, 0, 0.2);#}
+{#            border-radius: 10px;#}
+{#            padding: 15px;#}
+{#            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);#}
+{#            word-break: break-word; /* Ensures long text doesn't overflow */#}
+{#        }#}
+{#        .btn {#}
+{#            display: inline-block;#}
+{#            padding: 10px 20px;#}
+{#            font-size: 16px;#}
+{#            color: #fff;#}
+{#            background-color: #4951aa;#}
+{#            border: none;#}
+{#            border-radius: 30px;#}
+{#            text-decoration: none;#}
+{#            text-align: center;#}
+{#            cursor: pointer;#}
+{#            margin-top: 20px;#}
+{#        }#}
+{#        .btn:hover {#}
+{#            background-color: #374a8e;#}
+{#        }#}
+{#        .profile-section {#}
+{#            padding: 20px;#}
+{#            border-bottom: 1px solid #ddd;#}
+{#        }#}
+{#        .card-header img {#}
+{#            border-radius: 50%;#}
+{#            width: 150px;#}
+{#            height: 150px;#}
+{#            object-fit: cover;#}
+{#            border: 4px solid #fff;#}
+{#            margin-bottom: 15px;#}
+{#        }#}
+{#         .profile-info label {#}
+{#            font-weight: bold;#}
+{#            color: #4951aa;#}
+{#            margin-bottom: 5px;#}
+{#        }#}
+{#        .profile-info label {#}
+{#            font-weight: bold;#}
+{#            color: #4951aa;#}
+{#            margin-bottom: 5px;#}
+{#        }#}
+{##}
+{#        .profile-info p {#}
+{#            font-size: 16px;#}
+{#            color: #333;#}
+{#            background: rgba(255, 255, 255, 0.9);#}
+{#            border-radius: 10px;#}
+{#            padding: 15px;#}
+{#            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);#}
+{#            margin-bottom: 20px;#}
+{#        }#}
+{#    </style>#}
+{#</head>#}
+{#<body>#}
+{#    <div class="container">#}
+{#<form method="post" action="/driver_edit_post" enctype="multipart/form-data">{% csrf_token %}#}
+{##}
+{#        <div class="profile-info">#}
+{#             <div class="card-header">#}
+{#                <img src="{{ data.image.url }}" alt="Profile Image" width="200px" height="200px">#}
+{#                <h1>{{ data.name }}</h1>#}
+{#            </div>#}
+{#            <div class="profile-section">#}
+{#                <label for="name">Name:</label>#}
+{#                <p id="name">#}
+{#                                 <input type="text" value="{{ data.name }}" name="name" class="form-control">#}
+{##}
+{#                </p>#}
+{#            </div>#}
+{##}
+{#            <div class="profile-section">#}
+{#                <label for="contact">Contact:</label>#}
+{#                <p id="contact">#}
+{#                                 <input type="text" value="{{ data.contact }}" name="contact" class="form-control">#}
+{##}
+{#                </p>#}
+{#            </div>#}
+{##}
+{#            <div class="profile-section">#}
+{#                <label for="address">Address:</label>#}
+{#                <p id="address">#}
+{#                 <input type="text" value="{{ data.address }}" name="address" class="form-control">#}
+{#                </p>#}
+{#            </div>#}
+{##}
+{#            <div class="profile-section">#}
+{#                <label for="email">Email:</label>#}
+{#                <p id="email"> <input type="text" value="{{ data.email }}" name="email" class="form-control"></p>#}
+{#            </div>#}
+{# <div class="profile-section">#}
+{#                <label for="email">Image:</label>#}
+{#                <p id="email"> <input type="file"  name="img" class="form-control" accept="image/*"></p>#}
+{#            </div>#}
+{##}
+{#            <div class="profile-section">#}
+{#                <label for="licence">License:</label>#}
+{#                <p id="licence"><input type="text" value="{{ data.licence }}"  class="form-control" name="licence"></p>#}
+{#            </div>#}
+{##}
+{##}
+{##}
+{#            <div class="profile-section">#}
+{#                <label for="status">Status:</label>#}
+{#                <p id="status"><select name="status" class="form-control">#}
+{#                    <option value="{{ data.id }}">{{ data.status }}</option>#}
+{#                    <option value="Available">Available</option>#}
+{#                    <option value="Not Available">Not Available</option>#}
+{##}
+{#                </select></p>#}
+{#            </div>#}
+{##}
+{#            <input type="submit" class="btn">#}
+{#        </div>#}
+{#    </div>#}
+{#</form>#}
+{##}
+{#</body>#}
+{#</html>#}
+{#{% endblock %}#}
+
+
+
 {% extends 'driver/dindex2.html' %}
 {% block body %}
 <!DOCTYPE html>
@@ -5,7 +185,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Profile</title>
+    <title>Edit Profile</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,32 +202,47 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
+        /* Profile Header Styles */
         .profile-header {
             text-align: center;
             margin-bottom: 20px;
+            background-color: #4951aa; /* Blue background */
+            padding: 20px;
+            border-radius: 10px 10px 0 0;
+            color: white;
         }
-        .profile-header h1 {
-            font-size: 24px;
-            color: #4951aa;
-            margin: 0;
+
+        .profile-header label {
+            cursor: pointer;
         }
+
         .profile-header img {
             border-radius: 50%;
-            width: 120px;
-            height: 120px;
+            width: 150px;
+            height: 150px;
             object-fit: cover;
+            border: 4px solid #fff;
             margin-bottom: 15px;
         }
+
+        .profile-header h1 {
+            font-size: 24px;
+            color: #fff;
+        }
+
         .profile-info {
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
+
         .profile-info label {
             font-weight: bold;
             color: #4951aa;
             margin-top: 10px;
         }
+
         .profile-info p {
             margin: 5px 0;
             font-size: 16px;
@@ -57,8 +252,16 @@
             border-radius: 10px;
             padding: 15px;
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-            word-break: break-word; /* Ensures long text doesn't overflow */
+            word-break: break-word;
         }
+
+        .form-control {
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+        }
+
         .btn {
             display: inline-block;
             padding: 10px 20px;
@@ -72,74 +275,104 @@
             cursor: pointer;
             margin-top: 20px;
         }
+
         .btn:hover {
             background-color: #374a8e;
         }
+
         .profile-section {
             padding: 20px;
             border-bottom: 1px solid #ddd;
+        }
+
+        /* Hide the actual file input */
+        input[type="file"] {
+            display: none;
         }
     </style>
 </head>
 <body>
     <div class="container">
-<form method="post" action="/driver_edit_post" enctype="multipart/form-data">{% csrf_token %}
+        <form method="post" action="/driver_edit_post" enctype="multipart/form-data">
+            {% csrf_token %}
 
-        <div class="profile-info">
-            <div class="profile-section">
-                <label for="name">Name:</label>
-                <p id="name">
-                                 <input type="text" value="{{ data.name }}" name="name" class="form-control">
-
-                </p>
+            <!-- Profile Header Section -->
+            <div class="profile-header">
+                <!-- The label is associated with the hidden file input -->
+                <label for="imageInput">
+                    <img src="{{ data.image.url }}" alt="Profile Image" width="200px" height="200px">
+                </label>
+                <h1>{{ data.name }}</h1>
             </div>
 
-            <div class="profile-section">
-                <label for="contact">Contact:</label>
-                <p id="contact">
-                                 <input type="text" value="{{ data.contact }}" name="contact" class="form-control">
+            <!-- Hidden file input triggered by clicking the image -->
+            <input type="file" id="imageInput" name="img" class="form-control" accept="image/*">
 
-                </p>
+            <!-- Profile Info Section -->
+            <div class="profile-info">
+                <div class="profile-section">
+                    <label for="name">Name:</label>
+                    <p id="name">
+                        <input type="text" value="{{ data.name }}" name="name" class="form-control">
+                    </p>
+                </div>
+
+                <div class="profile-section">
+                    <label for="contact">Contact:</label>
+                    <p id="contact">
+                        <input type="text" value="{{ data.contact }}" name="contact" class="form-control">
+                    </p>
+                </div>
+
+                <div class="profile-section">
+                    <label for="address">Address:</label>
+                    <p id="address">
+                        <input type="text" value="{{ data.address }}" name="address" class="form-control">
+                    </p>
+                </div>
+
+                <div class="profile-section">
+                    <label for="email">Email:</label>
+                    <p id="email">
+                        <input type="text" value="{{ data.email }}" name="email" class="form-control">
+                    </p>
+                </div>
+
+                <div class="profile-section">
+                    <label for="licence">License:</label>
+                    <p id="licence">
+                        <input type="text" value="{{ data.licence }}" class="form-control" name="licence">
+                    </p>
+                </div>
+
+                <div class="profile-section">
+                    <label for="status">Status:</label>
+                    <p id="status">
+                        <select name="status" class="form-control">
+                            <option hidden value="{{ data.status }}">{{ data.status }}</option>
+                            <option value="Available">Available</option>
+                            <option value="Not Available">Not Available</option>
+                        </select>
+                    </p>
+                </div>
+
+                <div class="profile-section">
+                     <label for="status">Dats:</label>
+                     <p id="status">
+                    <label for="status">From Date:</label>
+
+
+                   <input type="date"  class="form-control" name="fd" placeholder="From Date" value="{{ f }}">
+                    <br/>
+                     <label for="status">To Date:</label>
+                   <input type="date"  class="form-control" name="td" placeholder="To Date" value="{{ t }}">
+                     </p>
+                </div>
+
+                <input type="submit" class="btn" value="Save Changes">
             </div>
-
-            <div class="profile-section">
-                <label for="address">Address:</label>
-                <p id="address">
-                 <input type="text" value="{{ data.address }}" name="address" class="form-control">
-                </p>
-            </div>
-
-            <div class="profile-section">
-                <label for="email">Email:</label>
-                <p id="email"> <input type="text" value="{{ data.email }}" name="email" class="form-control"></p>
-            </div>
- <div class="profile-section">
-                <label for="email">Image:</label>
-                <p id="email"> <input type="file"  name="img" class="form-control" accept="image/*"></p>
-            </div>
-
-            <div class="profile-section">
-                <label for="licence">License:</label>
-                <p id="licence"><input type="text" value="{{ data.licence }}"  class="form-control" name="licence"></p>
-            </div>
-
-
-
-            <div class="profile-section">
-                <label for="status">Status:</label>
-                <p id="status"><select name="status" class="form-control">
-                    <option value="{{ data.id }}">{{ data.status }}</option>
-                    <option value="Available">Available</option>
-                    <option value="Not Available">Not Available</option>
-
-                </select></p>
-            </div>
-
-            <input type="submit" class="btn">
-        </div>
+        </form>
     </div>
-</form>
-
 </body>
 </html>
 {% endblock %}

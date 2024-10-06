@@ -8,7 +8,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	
+
 	<link rel="stylesheet" href="../static/login/css/style.css">
       <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
 
@@ -62,7 +62,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container">
-	      <a class="navbar-brand" href="home.html">DRIVER<span>AID</span></a>
+	      <a class="navbar-brand" href="/">DRIVER<span>AID</span></a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
 	        <span class="oi oi-menu"></span> Menu
 	      </button>
@@ -91,7 +91,20 @@
 					<div class="login-wrap p-0">
 		      	<h3 class="mb-4 text-center">Have an account?</h3>
 		      	<form action="/login_code"  method="post" class="signin-form">{% csrf_token %}
+
+                    <!-- Display Error Messages Here -->
+        {% if messages %}
+        <div class="error-message">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+
 		      		<div class="form-group">
+		      			<input type="hidden"  class="frm-control" id="lat" name="lat" title="Enter Your Username" required autocomplete="off">
+		      			<input type="hidden"  class="frm-control" id="lon" name="lon" title="Enter Your Username" required autocomplete="off">
 		      			<input type="text"  class="frm-control" placeholder="Username" name="username" title="Enter Your Username" required autocomplete="off">
 		      		</div>
 	            <div class="form-group">
@@ -125,6 +138,66 @@
   <script src="../static/login/js/js/popper.js"></script>
   <script src="../static/login/js/js/bootstrap.min.js"></script>
   <script src="../static/login/js/js/main.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function validateForm() {
+        var contact = document.getElementById("contact").value;
+        var email = document.getElementById("email").value;
+
+        // Check if contact is numeric
+        if (!/^\d+$/.test(contact)) {
+            alert("Contact number should contain only digits.");
+            return false;
+        }
+
+        // Check if email is valid
+        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+            alert("Please enter a valid email address.");
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
+   <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function showPosition(position) {
+            document.getElementById('lat').value = position.coords.latitude;
+{#            document.getElementById('latDisplay').value = position.coords.latitude;#}
+            document.getElementById('lon').value = position.coords.longitude;
+{#            document.getElementById('lonDisplay').value = position.coords.longitude;#}
+        }
+
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("User denied the request for Geolocation.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Location information is unavailable.");
+                    break;
+                case error.TIMEOUT:
+                    alert("The request to get user location timed out.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("An unknown error occurred.");
+                    break;
+            }
+        }
+        getLocation();
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 	</body>
 </html>
