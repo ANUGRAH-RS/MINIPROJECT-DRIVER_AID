@@ -21,6 +21,14 @@
 		<link rel="stylesheet" type="text/css" href="/static/chat_style/jquery.mCustomScrollbar.min.css">
 		<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"></script>-->
 		<script type="text/javascript" src="/static/chat_style/jquery.mCustomScrollbar.min.js"></script>
+        <style>
+div.ex1 {
+
+  width: 310px;
+  height: 710px;
+  overflow: scroll;
+}
+</style>
 	</head>
 	<!--Coded With Love By Mutiullah Samim-->
 	<body>
@@ -30,17 +38,19 @@
 				<div class="col-md-4 col-xl-3 chat"><div class="card mb-sm-3 mb-md-0 contacts_card">
 					<div class="card-header">
 						<div class="input-group">
-							<a href="/councillor_home" style="color: white">Go to Home</a>
+							<a href="/user_home" style="color: white">Go to Home</a>
 							<!--<input type="text" placeholder="Search..." name="" class="form-control search">-->
 							<!--<div class="input-group-prepend">-->
 								<!--<span class="input-group-text search_btn"><i class="fas fa-search"></i></span>-->
 							<!--</div>-->
 						</div>
 					</div>
+                    <div class="ex1">
                     <div id="tb1">
                         <input type="hidden" name="d" id="d" value="{{ toid }}" />
            <input type="hidden" name="textfield2" id="rece" />
 
+                    </div>
                     </div>
 
 
@@ -436,7 +446,7 @@ var senid=$("#rece").val();
             $("#textfield").show();
 			var uid=$(this).val();
 			var uid= $(this).attr("name");
-			alert(uid);
+
 			var dlid=$("#doctorloginid").val();
 
 

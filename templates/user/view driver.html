@@ -139,7 +139,8 @@
                 {% if obj.a == 'Not available' %}
                      <h6 class="card-text"> {{ obj.a }}</h6>
                 {% else %} <h6 class="card-text"> Available from <br/>{{ obj.a }}</h6>
-                <a href="send_request/{{ obj.id }}#row" class="btn btn-info">Booking</a>
+                <a href="http://maps.google.com?q={{ obj.latitude }},{{ obj.longitude }}" target="_blank" class="btn btn-primsry">Track</a>
+                <a href="/send_request/{{ obj.id }}#row" class="btn btn-info">Booking</a>
                 {% endif %}
             </div>
         </div>

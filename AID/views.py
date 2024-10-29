@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 from AID.models import *
+from DRIVER_AID import settings
 
 
 def home(request):
@@ -16,7 +17,6 @@ def home(request):
 def log(request):
     return render(request, "login.html")
 def login_code(request):
-
     un=request.POST['username']
     pwd=request.POST['password']
     lat=request.POST['lat']
@@ -36,6 +36,7 @@ def login_code(request):
             ob1.longitude=lon
             ob1.save()
             request.session['image']=ob1.image.url
+            request.session['diber_suku']=ob1.name
             return redirect('/driver')
         elif ob.type == "user":
             return redirect('/user_home')
@@ -57,11 +58,9 @@ def admin(request):
     a=Driver.objects.filter(LOGIN__type='driver')
     aa=a.count()
     request.session['driver']=aa
-
     u=User.objects.all()
     uu=u.count()
     request.session['user']=uu
-
     cc = Complaint.objects.all()
     ccco = cc.count()
     request.session['ccco'] = ccco
@@ -72,6 +71,13 @@ def admin(request):
 
 def driver(request):
     return render(request,"driver/dindex2.html")
+
+
+def view_my_ratings(request):
+    feed = Feedback.objects.filter(DRIVER=Driver.objects.get(LOGIN=request.session['lid']))
+    return render(request, 'driver/my_feedbacks.html',{'feed':feed})
+
+
 def user(request):
     return render(request,"user.html")
 
@@ -146,7 +152,7 @@ def unblock_driver(request,id):
     return redirect('/admin')
 
 def verify_driver(request):
-    a=Driver.objects.all()
+    a=Driver.objects.all().order_by('-id')
     return render(request,'admin/verify_driver.html',{'data':a})
 
 
@@ -210,9 +216,46 @@ def admin_view_user_search(request):
     return render(request,'admin/view_user.html',{'data':a,"s":s})
 
 
+def manage_complaints(request):
+    complaint = Complaint.objects.all()
+    return render(request, 'admin/manage_complaints.html',{'complaint':complaint})
+
+def reply_complaint(request,id):
+    if request.method == 'POST':
+        complaint = Complaint.objects.get(id=id)
+        complaint.reply = request.POST['reply']
+        complaint.save()
+        return redirect('/manage_complaints')
+    return render(request, 'admin/reply_complaint.html')
+
+
 def user_home(request):
     a=Driver.objects.all()
     return render(request,'user/userindex.html',{'data':a})
+
+def manage_complaint(request):
+    complaints = Complaint.objects.filter(USER__LOGIN_id=request.session['lid']).order_by('-id')
+    return render(request, 'user/manage_complaint.html',{'complaints':complaints})
+
+
+from django.utils import timezone
+def send_complaint(request):
+    if request.method == 'POST':
+        complaint_text = request.POST.get('complaint')
+        did = request.POST.get('did')
+        date = timezone.now().strftime('%Y-%m-%d')  # Get current date
+
+        Complaint.objects.create(
+            USER=User.objects.get(LOGIN_id=request.session['lid']),  # Assuming the user is logged in
+            complaint=complaint_text,
+            date=date,
+            DRIVER=Driver.objects.get(id=did),
+            reply='pending'  # Initialize with an empty reply
+        )
+        return redirect('/manage_complaint')  # Redirect back to the complaints page
+
+    return render(request, 'user/manage_complaint.html')
+
 
 
 def viewmore_driver(request,id):
@@ -293,6 +336,10 @@ def user_edit_profile(request):
     user = User.objects.get(LOGIN_id=request.session['lid'])
     return render(request, 'user/edit_profile.html',{'user':user})
 
+
+
+
+
 # def user_edit_profile_post(request):
 #     name = request.POST['name']
 #     phone = request.POST['phone']
@@ -353,30 +400,155 @@ def user_edit_profile_post(request):
     return redirect('/user_view_profile')
 
 
-
 def user_view_driver(request):
-    a=Driver.objects.all()
-    dl=[]
+    a = Driver.objects.all()  # Get all drivers
+    dl = []  # List to store drivers and their calculated distances
+
+    # Get latitude and longitude from the session, with default fallback to None
+    user_lat = request.session.get('lat', None)
+    user_lon = request.session.get('lon', None)
+
+    # Ensure latitude and longitude are valid before proceeding
+    if not user_lat or not user_lon:
+        return render(request, 'user/view driver.html', {'error': 'Location data is missing from session'})
+
+    try:
+        user_lat = float(user_lat)
+        user_lon = float(user_lon)
+    except ValueError:
+        user_lat=11.876543
+        user_lon=75.34567
     for i in a:
-        dis=haversine_distance(float(request.session['lat']),float(request.session['lon']),float(i.latitude),float(i.longitude))
-        i.dis=float(dis)
-        oba=Driver_Availability.objects.filter(DRIVER__id=i.id)
-        if len(oba)>0:
-            i.a=""+str(oba[0].from_date)+" to "+str(oba[0].to_date)
+        # Check if driver's latitude and longitude are not empty
+        if not i.latitude or not i.longitude:
+            continue  # Skip this driver if latitude or longitude is missing
+
+        try:
+            driver_lat = float(i.latitude)
+            driver_lon = float(i.longitude)
+        except ValueError:
+            continue  # Skip this driver if latitude or longitude is invalid
+
+        # Calculate distance using haversine function
+        dis = haversine_distance(user_lat, user_lon, driver_lat, driver_lon)
+        i.dis = float(dis)
+
+        # Check driver availability
+        oba = Driver_Availability.objects.filter(DRIVER__id=i.id)
+        if len(oba) > 0:
+            i.a = f"{oba[0].from_date} to {oba[0].to_date}"
         else:
-            i.a="Not available"
-        dl.append(i.__dict__)
+            i.a = "Not available"
+
+        dl.append(i.__dict__)  # Append the driver's data
+
+    # Sort the list of drivers by distance
     sorted_data = sorted(dl, key=lambda x: x['dis'])
-    print(sorted_data)
-    return render(request,'user/view driver.html',{'data':sorted_data})
+
+    print(sorted_data)  # Debugging output to check sorted data
+    return render(request, 'user/view driver.html', {'data': sorted_data})
+
 
 def send_request(request,id):
+    request.session['did']=id
     obj = Driver.objects.get(id=id)
-    return render(request, 'user/bookin_page.html',{'obj':obj})
+
+    oba = Driver_Availability.objects.filter(DRIVER__id=id).order_by("-id")
+    if len(oba)>0:
+        fd=datetime.datetime.now().strftime("%Y-%m-%d")
+        fd = datetime.datetime.strptime(fd, '%Y-%m-%d').date()
+        if oba[0].from_date>fd:
+            fd=str(oba[0].from_date)
+
+
+        return render(request, 'user/bookin_page.html',{'obj':obj,"fd":str(fd),"td":str(oba[0].to_date),"s":"0"})
+    else:
+
+
+            return render(request, 'user/bookin_page.html', {'obj': obj,"s":"1"})
+
+def jquery_date_checking(request,date):
+    xx = BookingTable.objects.filter(DRIVER=request.session['did'], date__exact=date)
+    print(xx,"==================")
+    if len(xx) > 0:
+        return JsonResponse({"task": "yes"})
+    else:
+        return JsonResponse({"task": "no"})
+
+
+def book_now(request):
+    date = request.POST['bd']
+    from_p = request.POST['from']
+    to = request.POST['to']
+    pas = request.POST['pas']
+
+    # xx=BookingTable.objects.filter(DRIVER=request.session['did'],date__exact=date)
+    # if len(xx)>0:
+    #     return HttpResponse('''<script>alert("already booked....");window.location='/user_view_driver'</script>''')
+
+    ob=BookingTable()
+    ob.USER=User.objects.get(LOGIN__id=request.session['lid'])
+    ob.DRIVER=Driver.objects.get(id=request.session['did'])
+    ob.From_loc=from_p
+    ob.To_loc=to
+    ob.passengers=pas
+    ob.date=date
+    ob.status='pending'
+    ob.save()
+    return redirect("/userviewhistory#a")
+
+def userviewhistory(request):
+    history=BookingTable.objects.filter(USER__LOGIN__id=request.session['lid']).order_by("-id")
+    return render(request,"user/booking_history.html",{"history":history})
+
+from datetime import datetime
+def add_review(request,id):
+    if request.method == 'POST':
+        feedback=request.POST['feedback']
+        rating=request.POST['rating']
+
+        feed = Feedback(
+            USER=User.objects.get(LOGIN_id=request.session['lid']),
+            feedback=feedback,
+            date=datetime.now(),
+            rating=rating,
+            DRIVER=Driver.objects.get(id=id)
+        )
+        feed.save()
+        return redirect('/userviewhistory')
+    return render(request,"user/rating.html")
 
 
 
+def sendcomp(request,id):
+    request.session['did']=id
 
+    return render(request,"user/complaint.html")
+
+def driverviewhistory(request):
+    history=BookingTable.objects.filter(DRIVER__LOGIN__id=request.session['lid']).exclude(status='pending').order_by("-id")
+    return render(request,"driver/view_history.html",{"history":history})
+
+def driverviewhistory2(request):
+    history=BookingTable.objects.filter(DRIVER__LOGIN__id=request.session['lid']).exclude(status='pending').order_by("-id")
+    return render(request,"driver/view_history2.html",{"history":history})
+
+
+def view_request(request):
+    history=BookingTable.objects.filter(DRIVER__LOGIN__id=request.session['lid'],status='pending').order_by("-id")
+    return render(request,"driver/view_request.html",{"history":history})
+
+def accept_ride(request,id):
+    history=BookingTable.objects.get(id=id)
+    history.status="Accepted"
+    history.save()
+    return redirect("/view_request")
+
+def reject_ride(request,id):
+    history=BookingTable.objects.get(id=id)
+    history.status="Rejected"
+    history.save()
+    return redirect("/view_request")
 
 # def user_view_driver_search(request):
 #     name=request.POST['name']
@@ -469,12 +641,20 @@ def chatwithuser(request):
 
 
 def chatview(request):
+
     ob = User.objects.all()
     d=[]
     for i in ob:
-        r={"name":i.name,'photo':i.image,'email':i.email,'loginid':i.LOGIN.id}
+        ob1=chat.objects.filter(toid__id=request.session['lid'],fromid__id=i.LOGIN.id).order_by("-date")
+        name=i.name
+
+        if len(ob1)>0:
+            name=name+" ("+str(len(ob1))+")"
+        r={"name":name,'photo':i.image,'email':i.email,'loginid':i.LOGIN.id,"c":len(ob1)}
+
         d.append(r)
-    return JsonResponse(d, safe=False)
+    sorted_list = sorted(d, key=lambda x: x['c'], reverse=True)
+    return JsonResponse(sorted_list, safe=False)
 
 
 
@@ -520,12 +700,23 @@ def chatwithuserdr(request):
 
 
 def chatviewdr(request):
+    distinct_users = chat.objects.filter(toid=request.session["lid"]).values('toid').distinct()
+    print("====sss", distinct_users)
+    # for i in distinct_users:
     ob = Driver.objects.all()
     d=[]
     for i in ob:
-        r={"name":i.name,'photo':i.image.url,'email':i.email,'loginid':i.LOGIN.id}
+        ob1 = chat.objects.filter(toid__id=request.session['lid'], fromid__id=i.LOGIN.id).order_by("-date")
+        name = i.name
+
+        if len(ob1) > 0:
+            name = name + " (" + str(len(ob1)) + ")"
+        # r = {"name": name, 'photo': i.image, 'email': i.email, 'loginid': i.LOGIN.id, "c": len(ob1)}
+        r = {"name": name, 'photo': i.image.url, 'email': i.email, 'loginid': i.LOGIN.id, "c": len(ob1)}
         d.append(r)
-    return JsonResponse(d, safe=False)
+    sorted_list = sorted(d, key=lambda x: x['c'], reverse=True)
+
+    return JsonResponse(sorted_list, safe=False)
 
 
 
@@ -559,3 +750,74 @@ def coun_msgdr(request,id):
 
 
     return JsonResponse({"data":res,"name":obu.name,"photo":obu.image.url,"user_lid":obu.LOGIN.id})
+
+
+
+def forget_password(request):
+    return render(request,'ForgetPassword.html')
+
+
+from django.core.mail import send_mail
+def forget_password_post(request):
+    em = request.POST['username']
+    import random
+    import string
+    # password = random.randint(000000, 999999)
+    log = login_table.objects.filter(username=em)
+
+    length = 10 # Adjust the password length as needed
+    chars = string.ascii_letters + string.digits + string.punctuation
+    password = ''.join(random.choice(chars) for _ in range(length))
+
+    if log.exists():
+        logg = login_table.objects.get(username=em)
+        message = 'temporary Password  is!... ' + str(password)
+        send_mail(
+            'temporary...! Password',
+            message,
+            settings.EMAIL_HOST_USER,
+            [em, ],
+            fail_silently=False
+        )
+        logg.password = password
+        logg.save()
+        return HttpResponse('''
+                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success...Please Check Your Mail!',
+                                confirmButtonText: 'OK',
+                                reverseButtons: true
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location = '/log';
+                                }
+                            });
+                        });
+                    </script>
+                ''')
+
+
+
+    else:
+        return HttpResponse('''
+                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'invalid!',
+                                confirmButtonText: 'OK',
+                                reverseButtons: true
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location = '/forget_password';
+                                }
+                            });
+                        });
+                    </script>
+                ''')

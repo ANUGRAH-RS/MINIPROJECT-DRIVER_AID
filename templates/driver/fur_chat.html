@@ -21,6 +21,14 @@
 		<link rel="stylesheet" type="text/css" href="/static/chat_style/jquery.mCustomScrollbar.min.css">
 		<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"></script>-->
 		<script type="text/javascript" src="/static/chat_style/jquery.mCustomScrollbar.min.js"></script>
+        <style>
+div.ex1 {
+  background-color: lightblue;
+  width: 300px;
+  height: 710px;
+  overflow: scroll;
+}
+</style>
 	</head>
 	<!--Coded With Love By Mutiullah Samim-->
 	<body>
@@ -37,12 +45,14 @@
 							<!--</div>-->
 						</div>
 					</div>
+
+                    <div class="ex1">
                     <div id="tb1">
                         <input type="hidden" name="d" id="d" value="{{ toid }}" />
            <input type="hidden" name="textfield2" id="rece" />
 
                     </div>
-
+                    </div>
 
 					<div class="card-footer"></div>
 				</div></div>
@@ -436,7 +446,7 @@ var senid=$("#rece").val();
             $("#textfield").show();
 			var uid=$(this).val();
 			var uid= $(this).attr("name");
-			alert(uid);
+
 			var dlid=$("#doctorloginid").val();
 
 

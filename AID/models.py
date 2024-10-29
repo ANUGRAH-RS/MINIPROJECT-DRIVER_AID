@@ -41,12 +41,24 @@ class Complaint(models.Model):
     complaint=models.CharField(max_length=90)
     date=models.CharField(max_length=90)
     reply=models.CharField(max_length=90)
+    DRIVER=models.ForeignKey(Driver,on_delete=models.CASCADE)
 
 class Feedback(models.Model):
     USER=models.ForeignKey(User,on_delete=models.CASCADE)
     feedback=models.CharField(max_length=90)
     date=models.CharField(max_length=90)
     rating=models.CharField(max_length=90)
+    DRIVER=models.ForeignKey(Driver,on_delete=models.CASCADE)
+
+
+class BookingTable(models.Model):
+    USER=models.ForeignKey(User,on_delete=models.CASCADE)
+    DRIVER=models.ForeignKey(Driver,on_delete=models.CASCADE)
+    From_loc=models.CharField(max_length=90)
+    To_loc=models.CharField(max_length=90)
+    passengers=models.CharField(max_length=90)
+    date=models.CharField(max_length=90)
+    status=models.CharField(max_length=90)
 
 
 class chat(models.Model):

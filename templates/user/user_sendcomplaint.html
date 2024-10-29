@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Complaint</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="complaint-page">
+        <div class="complaint-container">
+            <h2>Send Complaint</h2>
+            <p>Please fill in the details below to submit your complaint. We will address it promptly.</p>
+
+            <form action="/submit-complaint" method="POST">
+                <!-- Complaint Category -->
+                <label for="category">Complaint Category:</label>
+                <select id="category" name="category" class="frm-control" required>
+                    <option value="">Select Category</option>
+                    <option value="service">Service Issue</option>
+                    <option value="billing">Billing Issue</option>
+                    <option value="driver">Driver Issue</option>
+                    <option value="other">Other</option>
+                </select>
+
+                <!-- Subject -->
+                <label for="subject">Subject:</label>
+                <input type="text" id="subject" name="subject" class="frm-control" placeholder="Enter the subject of your complaint" required>
+
+                <!-- Complaint Details -->
+                <label for="details">Complaint Details:</label>
+                <textarea id="details" name="details" class="frm-control" rows="6" placeholder="Describe your complaint in detail" required></textarea>
+
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn">Submit Complaint</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

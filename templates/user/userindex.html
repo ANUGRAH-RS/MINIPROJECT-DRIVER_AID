@@ -51,13 +51,13 @@ Author URL: http://w3layouts.com
               <a class="nav-link" href="/user_view_driver#a"> Drivers</a>
             </li>
               <li class="nav-item">
-              <a class="nav-link" href="">History</a>
+              <a class="nav-link" href="/userviewhistory#a">History</a>
             </li>
               <li class="nav-item">
               <a class="nav-link" href="">Rating</a>
             </li>
               <li class="nav-item">
-              <a class="nav-link" href="">Complaint</a>
+              <a class="nav-link" href="/manage_complaint#a">Complaint</a>
             </li>
               <li class="nav-item">
               <a class="nav-link" href="">Payment</a>
@@ -255,7 +255,7 @@ Author URL: http://w3layouts.com
                       <div class="ch-info-front "> <img src="{{ i.image.url }}" width="175" height="175" class="round-image"/></div>
                       <div class="ch-info-back">
 
-                        <h4>{{ i.name }}</h4>
+                        <h4><a href="/send_request/{{ i.id }}#a" style="color:white;"> {{ i.name }}</a></h4>
                       </div>
                     </div>
                   </div>
@@ -421,7 +421,8 @@ Driver Aid is a system designed to provide reliable, location-based transportati
   </footer>
   <!--//footer-66 -->
   <!-- Template JavaScript -->
-  <script src="../static/user/assets/js/jquery-3.3.1.min.js"></script>
+{#  <script src="../static/user/assets/js/jquery-3.3.1.min.js"></script>#}
+  <script src="../static/jquery.js"></script>
   <!-- disable body scroll which navbar is in active -->
 <script src="../static/user/assets/js/jquery.magnific-popup.min.js"></script>
 <script>

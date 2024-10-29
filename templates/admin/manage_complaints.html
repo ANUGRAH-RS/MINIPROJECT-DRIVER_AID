@@ -1,0 +1,43 @@
+{% extends 'admin/admin.html' %}
+{% block body %}
+<div class="container mt-4">
+    <h2 class="mb-4">Manage Complaints</h2>
+
+    {% if complaint %}
+        <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Si.No</th>
+                    <th>User</th>
+                    <th>Complaint</th>
+                    <th>Date</th>
+                    <th>Reply</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in complaint %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ item.USER.name }}</td>
+                        <td>{{ item.complaint }}</td>
+                        <td>{{ item.date }}</td>
+                        <td>{{ item.reply|default:"<em>No reply yet</em>"|safe }}</td>
+                        <td>
+                            {% if item.reply == 'pending' %}
+                            <a href="/reply_complaint/{{ item.id }}" class="btn btn-info btn-sm">Reply</a>
+                            {% else %}
+                                Replied
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-warning" role="alert">
+            No complaints found.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

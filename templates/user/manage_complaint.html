@@ -1,0 +1,64 @@
+{% extends 'user/userindex.html' %}
+{% block body %}
+<div class="container mt-4">
+    <h2 class="mb-4">Your Complaints</h2>
+
+    <!-- Button to Open the Modal -->
+
+
+    {% if complaints %}
+        <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Date</th>
+                    <th>Complaint</th>
+                    <th>Driver</th>
+                    <th>Reply</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for complaint in complaints %}
+                    <tr>
+                        <td>{{ complaint.date }}</td>
+                        <td>{{ complaint.complaint }}</td>
+                        <td>{{ complaint.DRIVER.name }}</td>
+                        <td>{{ complaint.reply|default:"<em>No reply yet</em>"|safe }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-warning" role="alert">
+            No complaints found.
+        </div>
+    {% endif %}
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="complaintModal" tabindex="-1" role="dialog" aria-labelledby="complaintModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="complaintModalLabel">New Complaint</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="complaintForm" method="post" action="/send_complaint">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="complaint">Complaint</label>
+                        <textarea class="form-control" id="complaint" name="complaint" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Complaint</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+{% endblock %}

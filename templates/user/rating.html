@@ -1,0 +1,62 @@
+{% extends 'user/userindex.html' %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rate Your Driver</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .rating-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        .form-label {
+            font-weight: bold;
+            color: #4951aa;
+        }
+        .rating-stars {
+            font-size: 1.5em;
+            color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="rating-container">
+        <h3 class="text-center">Rate Your Driver</h3>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="feedback" class="form-label">Feedback</label>
+                <textarea class="form-control" id="feedback" name="feedback" rows="4" required placeholder="Write your feedback here..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="rating" class="form-label">Rating</label>
+                <select class="form-control" id="rating" name="rating" required>
+                    <option value="">Select a rating</option>
+                    <option value="1">1 - Very Poor</option>
+                    <option value="2">2 - Poor</option>
+                    <option value="3">3 - Average</option>
+                    <option value="4">4 - Good</option>
+                    <option value="5">5 - Excellent</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Submit Review</button>
+        </form>
+    </div>
+</div>
+
+<!-- Bootstrap JS (Optional) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+{% endblock %}

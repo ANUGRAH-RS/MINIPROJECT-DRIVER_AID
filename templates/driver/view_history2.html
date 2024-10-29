@@ -1,0 +1,65 @@
+{% extends 'driver/dindex2.html' %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History Table</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .table-container {
+            margin: 50px auto;
+            max-width: 1000px;
+        }
+        .table thead th {
+            background-color: #4951aa;
+            color: #fff;
+            text-align: center;
+        }
+        .table tbody td {
+            text-align: center;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container table-container">
+    <h2 class="text-center">History</h2>
+    
+    <table class="table table-bordered table-striped mt-4">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in history %}
+                <tr>
+                    <td><img src="{{ obj.USER.image }}" alt="{{ obj.USER.name }}'s image" style="width: 80px; height: 80px; border-radius: 5px;"></td>
+                    <td>{{ obj.USER.name|capfirst }}</td>
+                    <td>{{ obj.From_loc }}</td>
+                    <td>{{ obj.To_loc }}</td>
+                    <td>{{ obj.date }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="9" class="text-center text-muted">No data available.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+{% endblock %}

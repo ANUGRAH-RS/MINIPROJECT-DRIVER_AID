@@ -12,6 +12,9 @@ urlpatterns = [
     path('driver_reg', views.driver_reg),
     path('user', views.user),
     path('admin_view_user', views.admin_view_user),
+    path('manage_complaints', views.manage_complaints),
+    path('reply_complaint/<id>', views.reply_complaint),
+    path('sendcomp/<id>', views.sendcomp),
     path('admin_view_user_search', views.admin_view_user_search),
     path('user_reg', views.user_reg),
     path('verify_driver', views.verify_driver),
@@ -20,8 +23,12 @@ urlpatterns = [
     path('reject_verify_accept/<id>', views.reject_verify_accept),
 
     path('user_home', views.user_home),
+    path('book_now', views.book_now),
+    path('userviewhistory', views.userviewhistory),
     path('viewmore_driver/<int:id>', views.viewmore_driver),
     path('viewmore_user/<int:id>', views.viewmore_user),
+    path('view_my_ratings', views.view_my_ratings),
+    path('driverviewhistory2', views.driverviewhistory2),
 
     path('user_view_profile', views.user_view_profile),
     path('user_edit_profile', views.user_edit_profile),
@@ -42,5 +49,21 @@ urlpatterns = [
     path('chatviewdr', views.chatviewdr, name='chatviewdr'),
     path('coun_msgdr/<int:id>', views.coun_msgdr, name='coun_msgdr'),
     path('coun_insert_chatdr/<str:msg>/<int:id>', views.coun_insert_chatdr, name='coun_insert_chatdr'),
+
+    path('forget_password', views.forget_password),
+    path('forget_password_post', views.forget_password_post),
+    path('manage_complaint', views.manage_complaint),
+    path('send_complaint', views.send_complaint),
+    path('add_review/<id>', views.add_review,name='add_review'),
+
+
+
+    path('driverviewhistory', views.driverviewhistory),
+    path('view_request', views.view_request),
+    path('accept_ride/<id>', views.accept_ride),
+    path('reject_ride/<id>', views.reject_ride),
+
+
+    path('jquery_date_checking/<date>', views.jquery_date_checking),
 
 ]

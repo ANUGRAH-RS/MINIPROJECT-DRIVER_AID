@@ -76,8 +76,8 @@
 {#{% endblock %}#}
 
 
-{##}
-{% extends 'user/userindex.html' %}
+
+{% extends 'driver/dindex2.html' %}
 {% block body %}
 <!DOCTYPE html>
 <html lang="en">
@@ -107,62 +107,42 @@
     </style>
 </head>
 <body>
-<div id="row"><br></div>
-<div class="container mt-4" >
-<h2 class="text-center">Drivers</h2>
-{#<form action="/user_view_driver_search#a" method="post" id="location-form">{% csrf_token %}#}
-{#    <table>#}
-{#        <tr>#}
-{#            <th><input type="text" class="form-control" placeholder="Search Name" name="name"> </th>#}
-{#            <!-- Hidden fields for latitude and longitude -->#}
-{#            <input type="hidden" name="latitude" id="latitude">#}
-{#            <input type="hidden" name="longitude" id="longitude">#}
-{#            <th><input type="submit" value="Search" class="btn btn-info"> </th>#}
-{#        </tr>#}
-{#    </table>#}
-{#</form>#}
+
+<div class="container mt-4">
+<h2 class="text-center">History</h2>
+
 
 <div class="row">
+    <!-- For Loop to iterate over the objects -->
+    {% for obj in history %}
     <div class="col-md-4">
         <div class="card">
-            <img src="/media/{{ obj.image }}" class="card-img-top" alt="{{ obj.name }}'s image" style="height: 200px;">
+            <!-- Displaying the image -->
+            <img src="{{ obj.USER.image }}" class="card-img-top" alt="{{ obj.USER.name }}'s image" style="height: 200px;">
             <div class="card-body">
-                <h5 class="card-title">{{ obj.name }}</h5>
-                <p class="card-text">Contact: {{ obj.contact }}</p>
-                <p class="card-text">Email: <span style="text-transform: lowercase;">{{ obj.email }}</span></p>
-                <p class="card-text">Address: {{ obj.address }}</p>
-                <p class="card-text">License: {{ obj.licence }}</p>
+                <h5 class="card-title">{{ obj.USER.name }}</h5>
+                <p class="card-text">Contact: {{ obj.USER.contact }}</p>
 
+                <p class="card-text">Address: {{ obj.USER.address }}</p>
 
+                <p class="card-text">From: {{ obj.From_loc }}</p>
+                <p class="card-text">To  : {{ obj.To_loc }}</p>
+                <p class="card-text">Passengers  : {{ obj.passengers }}</p>
+                <p class="card-text">Date        : {{ obj.date }}</p>
+                <p class="card-text">Status        : {{ obj.status }}</p>
+
+{#                {% if obj.a == 'Not available' %}#}
+{#                     <h6 class="card-text"> {{ obj.a }}</h6>#}
+{#                {% else %} <h6 class="card-text"> Available from <br/>{{ obj.a }}</h6>#}
+{#                <a href="http://maps.google.com?q={{ obj.latitude }},{{ obj.longitude }}" target="_blank" class="btn btn-primsry">Track</a>#}
+{#                <a href="send_request/{{ obj.id }}#row" class="btn btn-info">Booking</a>#}
+{#                {% endif %}#}
             </div>
         </div>
-    </div> <div class="col-md-6">
-    <br/>
-    <br/>
-    <br/> <br/>
-    <br/>
-    {% if s == "0" %}
-    <form method="post" action="/book_now">
-        <div class="card">
-
-            <div class="card-body">
-
-                <p class="card-text">            Date: <label><input type="date" name="bd" min="{{ fd }}" max="{{ td }}" id="dt"class="form-control"></label><p id="cn"></p></p>
-                <p class="card-text">             <label><input type="text" name="from" placeholder="From" class="form-control"></label></p>
-                <p class="card-text">             <label><input type="text" name="to" placeholder="TO" class="form-control"></label></p>
-                <p class="card-text">             <label><input type="text" name="pas" placeholder="No of Passengers" class="form-control"></label></p>
-
-                <p class="card-text"><input type="submit" value="Book Now" id="bt" class="btn btn-primary"/></p>
-
-
-            </div>
-        </div>
-
-    </form>
-    {% else %}
-        <h1>No Schedule Available</h1>
-    {% endif %}
     </div>
+    {% empty %}
+    <p>No data available.</p>
+    {% endfor %}
 </div>
 </div>
 
@@ -188,40 +168,4 @@
 
 </body>
 </html>
-<script src="/static/chat_style/jquery.min.js"></script>
-    <script>
-   $(document).ready(function () {
-    $("#dt").change(function () {
-        var selectedDate = $(this).val();
-
-        $.ajax({
-            url: "/jquery_date_checking/" + selectedDate,
-            type: "GET",
-            dataType: "json",
-            success: function(data) {
-                if (data.task === "yes") {
-                     $("#cn").show();
-                    $("#cn").html("This Day Already Booked").css("color", "red");
-                    $("#bt").hide();
-                } else {
-                    $("#bt").show();
-                    $("#cn").hide();
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX Error: " + error);
-                alert("An error occurred while checking availability. Please try again.");
-            }
-        });
-    });
-});
-
-
-
-
-
-    </script>
-
-
-
 {% endblock %}
