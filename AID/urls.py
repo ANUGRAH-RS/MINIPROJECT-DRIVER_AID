@@ -29,6 +29,7 @@ urlpatterns = [
     path('viewmore_user/<int:id>', views.viewmore_user),
     path('view_my_ratings', views.view_my_ratings),
     path('driverviewhistory2', views.driverviewhistory2),
+    path('payment/', views.payment_view, name='payment'),
 
     path('user_view_profile', views.user_view_profile),
     path('user_edit_profile', views.user_edit_profile),

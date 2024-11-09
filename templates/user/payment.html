@@ -1,0 +1,125 @@
+{% extends 'user/userindex.html' %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+<div class="container mx-auto p-6 bg-white shadow-lg rounded-lg max-w-md mt-10">
+    <h2 class="text-center text-2xl font-semibold mb-6">Payment Details</h2>
+
+    <form action="/payment/" method="POST" id="paymentForm" novalidate>
+        {% csrf_token %}
+
+        <!-- Hidden field to pass the booking ID -->
+        <input type="hidden" name="booking_id" id="bookingIdInput" value="{{ booking.id }}">
+
+        <!-- Payment Method -->
+        <div class="mb-4">
+            <label for="paymentMethod" class="block text-gray-700">Payment Method</label>
+            <select id="paymentMethod" name="paymentMethod" class="w-full p-2 border border-gray-300 rounded-md" required>
+                <option value="">Select Payment Method</option>
+                <option value="credit_card">Credit Card</option>
+                <option value="debit_card">Debit Card</option>
+            </select>
+            <span class="text-red-500 text-xs" id="paymentMethodError"></span>
+        </div>
+
+        <!-- Account Number -->
+        <div class="mb-4">
+            <label for="accountNumber" class="block text-gray-700">Account Number</label>
+            <input type="text" id="accountNumber" name="accountNumber" class="w-full p-2 border border-gray-300 rounded-md" placeholder="Enter your account number" required pattern="\d{16}" maxlength="16">
+            <span class="text-red-500 text-xs" id="accountNumberError"></span>
+        </div>
+
+        <!-- Validity Date (Expiration Date) -->
+        <div class="mb-4">
+            <label for="validity" class="block text-gray-700">Expiry Date</label>
+            <input type="month" id="validity" name="validity" class="w-full p-2 border border-gray-300 rounded-md" required>
+            <span class="text-red-500 text-xs" id="validityError"></span>
+        </div>
+
+        <!-- CVV -->
+        <div class="mb-4">
+            <label for="cvv" class="block text-gray-700">CVV</label>
+            <input type="text" id="cvv" name="cvv" class="w-full p-2 border border-gray-300 rounded-md" placeholder="Enter your CVV" required pattern="\d{3}" maxlength="3">
+            <span class="text-red-500 text-xs" id="cvvError"></span>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="mb-4">
+            <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 focus:outline-none">
+                Confirm Payment
+            </button>
+        </div>
+    </form>
+
+    <!-- Toast Notification -->
+    {% if success_message %}
+   <div id="toast" class="fixed inset-x-0 bottom-4 mx-auto p-4 bg-green-500 text-white rounded shadow-lg max-w-xs z-50 text-center">
+    {{ success_message }}
+</div>
+    {% endif %}
+</div>
+
+<!-- Tailwind CSS Form Validation -->
+<script>
+    document.getElementById('paymentForm').addEventListener('submit', function(e) {
+        let isValid = true;
+
+        // Reset errors
+        document.getElementById('paymentMethodError').innerText = '';
+        document.getElementById('accountNumberError').innerText = '';
+        document.getElementById('validityError').innerText = '';
+        document.getElementById('cvvError').innerText = '';
+
+        // Payment Method Validation
+        if (!document.getElementById('paymentMethod').value) {
+            document.getElementById('paymentMethodError').innerText = 'Please select a payment method.';
+            isValid = false;
+        }
+
+        // Account Number Validation
+        const accountNumber = document.getElementById('accountNumber');
+        if (!accountNumber.value || !accountNumber.value.match(/^\d{16}$/)) {
+            document.getElementById('accountNumberError').innerText = 'Please enter a valid 16-digit account number.';
+            isValid = false;
+        }
+
+        // Expiry Date Validation
+        if (!document.getElementById('validity').value) {
+            document.getElementById('validityError').innerText = 'Please select the expiration date.';
+            isValid = false;
+        }
+
+        // CVV Validation
+        const cvv = document.getElementById('cvv');
+        if (!cvv.value || !cvv.value.match(/^\d{3}$/)) {
+            document.getElementById('cvvError').innerText = 'Please enter a valid 3-digit CVV.';
+            isValid = false;
+        }
+
+        if (!isValid) {
+            e.preventDefault();
+        }
+    });
+
+    // Display toast and redirect after payment
+    {% if success_message %}
+        // Show toast for 3 seconds, then redirect
+        setTimeout(function() {
+            document.getElementById('toast').style.display = 'none';
+            window.location.href = '/userviewhistory'; // Updated with the redirect path
+        }, 3000);
+    {% endif %}
+</script>
+
+</body>
+</html>
+{% endblock %}

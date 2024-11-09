@@ -1,9 +1,10 @@
-import datetime
 
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 
 # Create your views here.
 from AID.models import *
@@ -448,24 +449,41 @@ def user_view_driver(request):
     print(sorted_data)  # Debugging output to check sorted data
     return render(request, 'user/view driver.html', {'data': sorted_data})
 
+from datetime import datetime
+#
+# def send_request(request,id):
+#     request.session['did']=id
+#     obj = Driver.objects.get(id=id)
+#
+#     oba = Driver_Availability.objects.filter(DRIVER__id=id).order_by("-id")
+#     if len(oba)>0:
+#         fd=datetime.datetime.now().strftime("%Y-%m-%d")
+#         fd = datetime.datetime.strptime(fd, '%Y-%m-%d').date()
+#         if oba[0].from_date>fd:
+#             fd=str(oba[0].from_date)
+#
+#
+#         return render(request, 'user/bookin_page.html',{'obj':obj,"fd":str(fd),"td":str(oba[0].to_date),"s":"0"})
+#     else:
+#
+#
+#             return render(request, 'user/bookin_page.html', {'obj': obj,"s":"1"})
 
-def send_request(request,id):
-    request.session['did']=id
+def send_request(request, id):
+    request.session['did'] = id
     obj = Driver.objects.get(id=id)
 
     oba = Driver_Availability.objects.filter(DRIVER__id=id).order_by("-id")
-    if len(oba)>0:
-        fd=datetime.datetime.now().strftime("%Y-%m-%d")
-        fd = datetime.datetime.strptime(fd, '%Y-%m-%d').date()
-        if oba[0].from_date>fd:
-            fd=str(oba[0].from_date)
+    if len(oba) > 0:
+        fd = datetime.now().strftime("%Y-%m-%d")
+        fd = datetime.strptime(fd, '%Y-%m-%d').date()
+        if oba[0].from_date > fd:
+            fd = str(oba[0].from_date)
 
-
-        return render(request, 'user/bookin_page.html',{'obj':obj,"fd":str(fd),"td":str(oba[0].to_date),"s":"0"})
+        return render(request, 'user/bookin_page.html', {'obj': obj, "fd": str(fd), "td": str(oba[0].to_date), "s": "0"})
     else:
+        return render(request, 'user/bookin_page.html', {'obj': obj, "s": "1"})
 
-
-            return render(request, 'user/bookin_page.html', {'obj': obj,"s":"1"})
 
 def jquery_date_checking(request,date):
     xx = BookingTable.objects.filter(DRIVER=request.session['did'], date__exact=date)
@@ -583,19 +601,30 @@ def user_view_driver_search(request):
         search_name = request.POST.get('name', '')
         a = Driver.objects.filter(name__icontains=search_name)
 
+        # Retrieve session lat/lon and ensure they are valid floats
+        try:
+            lat = float(request.session.get('lat', ''))
+            lon = float(request.session.get('lon', ''))
+        except ValueError:
+            # Handle invalid or missing session data
+            return render(request, 'error_page.html', {'error': 'Location data is missing or invalid.'})
+
         dl = []
         for i in a:
-            dis = haversine_distance(float(request.session['lat']), float(request.session['lon']), float(i.latitude),
-                                     float(i.longitude))
-            i.dis = float(dis)
+            try:
+                # Calculate distance only if latitude and longitude are valid
+                dis = haversine_distance(lat, lon, float(i.latitude), float(i.longitude))
+                i.dis = dis
+            except ValueError:
+                # Handle any invalid driver latitude/longitude data
+                i.dis = float('inf')  # Assign a high value or skip this entry if desired
+
             oba = Driver_Availability.objects.filter(DRIVER__id=i.id)
-            if len(oba) > 0:
-                i.a = ""+str(oba[0].from_date) + " to " + str(oba[0].to_date)
-            else:
-                i.a = "Not available"
+            i.a = f"{oba[0].from_date} to {oba[0].to_date}" if oba else "Not available"
             dl.append(i.__dict__)
+
+        # Sort the data based on distance
         sorted_data = sorted(dl, key=lambda x: x['dis'])
-        print(sorted_data)
         context = {'data': sorted_data}
         return render(request, 'user/view driver.html', context)
 
@@ -821,3 +850,37 @@ def forget_password_post(request):
                         });
                     </script>
                 ''')
+
+
+
+
+
+
+
+
+
+def payment_view(request):
+    success_message = None  # Initialize success message variable
+
+    if request.method == 'POST':
+        # Retrieve the booking ID from the form submission
+        booking_id = request.POST.get('booking_id')
+
+        # Check if the booking exists
+        try:
+            booking = BookingTable.objects.get(id=booking_id)
+        except BookingTable.DoesNotExist:
+            return HttpResponse("Booking not found.", status=404)
+
+        # Process the payment (you can add your payment processing logic here)
+
+        # If payment is successful, update the booking status
+        booking.status = 'Paid'
+        booking.save()
+
+        # Set a success message
+        success_message = "Your payment was successful............................"
+
+    # Retrieve the booking to pass to the template if needed
+    booking = BookingTable.objects.filter().last()  # Or another method to fetch the booking
+    return render(request, 'user/payment.html', {'success_message': success_message, 'booking': booking})

@@ -130,24 +130,36 @@
             <!-- Displaying the image -->
             <img src="/media/{{ obj.DRIVER.image }}" class="card-img-top" alt="{{ obj.DRIVER.name }}'s image" style="height: 200px;">
             <div class="card-body">
-                <h5 class="card-title">{{ obj.DRIVER.name }}</h5>
-                <p class="card-text">Contact: {{ obj.DRIVER.contact }}</p>
+    <h5 class="card-title">{{ obj.DRIVER.name }}</h5>
+    <p class="card-text">Contact: {{ obj.DRIVER.contact }}</p>
+    <p class="card-text">Address: {{ obj.DRIVER.address }}</p>
+    <p class="card-text">License: {{ obj.DRIVER.licence }}</p>
+    <p class="card-text">From: {{ obj.From_loc }}</p>
+    <p class="card-text">To: {{ obj.To_loc }}</p>
+    <p class="card-text">Passengers: {{ obj.passengers }}</p>
+    <p class="card-text">Date: {{ obj.date }}</p>
+    <p class="card-text">Status: {{ obj.status }}</p>
 
-                <p class="card-text">Address: {{ obj.DRIVER.address }}</p>
-                <p class="card-text">License: {{ obj.DRIVER.licence }}</p>
-                <p class="card-text">From: {{ obj.From_loc }}</p>
-                <p class="card-text">To  : {{ obj.To_loc }}</p>
-                <p class="card-text">Passengers  : {{ obj.passengers }}</p>
-                <p class="card-text">Date        : {{ obj.date }}</p>
-                <p class="card-text">Status        : {{ obj.status }}</p>
-                {% if obj.status == 'Accepted' %}
-                     <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#complaintModal"
-                        data-driver-id="{{ obj.DRIVER.id }}">
-                    <i class="fas fa-plus"></i> Send New Complaint
-                </button>
+    {% if obj.status == 'Accepted' %}
+      <a href="/payment/#a" class="btn btn-primary mb-3 w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200">
+    Pay Now
+</a>
+
+
+
+
+
+    {% elif obj.status == 'Paid' %}
+        <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#complaintModal"
+            data-driver-id="{{ obj.DRIVER.id }}">
+            <i class="fas fa-plus"></i> Send New Complaint
+        </button>
+
+
+    <br> <a href="/add_review/{{ obj.DRIVER.id }}" class="btn btn-secondary mt-2">Add Review</a>
                 {% endif %}
-               <br> <a href="/add_review/{{ obj.DRIVER.id }}">Add review</a>
-            </div>
+</div>
+
         </div>
     </div>
     {% empty %}
